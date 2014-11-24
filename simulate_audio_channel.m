@@ -71,4 +71,3 @@ yrec = resample(x,1,4);
 yrec = yrec(1:5*22050)+ sigma*randn(5*22050,1); % Add noise
 
 end
-
