@@ -1,4 +1,4 @@
-function zu = upsample(z, R)
+function zu = upsample(z, N, R)
 % zu is the upsampled vector
 
 zu = zeros(N*R,1);

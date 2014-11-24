@@ -2,13 +2,51 @@ clc, clear variables
 
 N = 128;
 lengthCycP = 60;
-% z = bitsToOFDM(estimationBits, messageBits, N, lengthCycP);
+%z = bitsToOFDM(estimationBits, messageBits, N, lengthCycP);
 z = 0.8.^(0:N-1)';                   % original signal
 NN = 2^14;                           % Number of frequency grid points
 f = (0:NN-1)/NN;
 semilogy(f,abs(fft(z,NN)))           % Check transform
 xlabel('Relative frequency [f/fs]', 'Interpreter', 'latex', 'FontSize', 20);
-%% Test of bitsToOFDM and back
+%% SENDER test of hole chain
+clc, clear variables
+
+N = 128;
+NN = 2^14;   
+lengthCycP = 60;
+% Generate random bit sequence
+messageBits = 2*round(rand(1,2*N))-1;
+estimationBits = 2*round(rand(1,2*N))-1;
+
+% Make z(n)
+z = bitsToOFDM(estimationBits, messageBits, N, lengthCycP);
+
+% Upsample
+R = 5;
+zu = upsample(z, length(z), R);
+
+%Interpolate
+zi = interpolate(zu, R);
+
+%Modulate
+fs = 22050;
+fc = 4000;
+zm = modulate(zi,fs,fc,NN);
+
+%Make real
+zmr = real(zm);
+
+%Send through audio channel
+sigma = 0;
+yrec = simulate_audio_channel( zmr, sigma );
+%% RECIEVER test of hole chain
+
+% left to do here...: demodulation, decimation, iOFDMToBits
+
+
+% from y(n) to bits
+%b = iOFDMToBits(y, estimationBits, lengthCycP, N);
+%% Test of bitsToOFDM and back like in Project1A
 N = 128;
 lengthCycP = 60;
 % Generate random bit sequence
@@ -31,7 +69,7 @@ xlabel('Normalized frequency [f/fs]', 'Interpreter', 'latex', 'FontSize', 20);
 %% Design a LP interpolation filter
 B = firpm(32,2*[0 0.5/R*0.9 0.5/R*1.6 1/2],[1 1 0 0]);
 zi = conv(zu,B);
-
+zi = interpolate(zu, R);
 % zi is now the interpolated signal
 figure(1)
 plot(zi)
@@ -46,7 +84,7 @@ fc = 4000;
 F = (0:NN-1)/NN*fs;
 n = (0:length(zi)-1)';
 zm = zi.*exp(i*2*pi*fc/fs*n);
-
+zm = modulation(zi,fs,fc,NN);
 semilogy(F,abs([fft(zi,NN) fft(zm,NN) ]) ) % Check transforms
 legend('Interpolated','Modulated')
 xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 20);
