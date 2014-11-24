@@ -26,7 +26,9 @@ R = 5;
 zu = upsample(z, length(z), R);
 
 %Interpolate
-zi = interpolate(zu, R);
+%zi = interpolate(zu, R);
+B = firpm(32,2*[0 0.5/R*0.9 0.5/R*1.6 1/2],[1 1 0 0]);
+zi = conv(zu,B);
 
 %Modulate
 fs = 22050;
@@ -39,13 +41,21 @@ zmr = real(zm);
 %Send through audio channel
 sigma = 0;
 yrec = simulate_audio_channel( zmr, sigma );
-%% RECIEVER test of hole chain
+%% RECIEVER test of hole chain (need to add some synchronization)
+%Demodulation
+%m = demodulate(yrec,fs,fc,NN,zi)
+yib = demodulate(zmr,fs,fc,NN,zi);
 
-% left to do here...: demodulation, decimation, iOFDMToBits
+%Decimation
+B = firpm(32,2*[0 0.5/R*0.9 0.5/R*1.6 1/2],[1 1 0 0]);
+yi = conv(yib,B);
 
+%Down sampling
+D = 5;
+y = yi(1:D:end);
 
-% from y(n) to bits
-%b = iOFDMToBits(y, estimationBits, lengthCycP, N);
+% from y(n) to bits (need to add some synchronization)
+b = iOFDMToBits(y, estimationBits, lengthCycP, N);
 %% Test of bitsToOFDM and back like in Project1A
 N = 128;
 lengthCycP = 60;
