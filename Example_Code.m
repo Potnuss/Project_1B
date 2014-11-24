@@ -1,4 +1,5 @@
 %% Example of up-sampling
+clc, clear variables
 N = 128;
 z = 0.8.^(0:N-1)';                   % original signal
 NN = 2^14;                           % Number of frequency grid points
