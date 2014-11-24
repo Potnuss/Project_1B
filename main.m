@@ -1,7 +1,7 @@
 clc, clear variables
 
 N = 128;
-% z = somefunction()
+z = bitsToOFDM(estimationBits, messageBits, N, lengthCycP);
 z = 0.8.^(0:N-1)';                   % original signal
 NN = 2^14;                           % Number of frequency grid points
 f = (0:NN-1)/NN;
