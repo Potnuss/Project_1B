@@ -1,12 +1,24 @@
 clc, clear variables
 
 N = 128;
-z = bitsToOFDM(estimationBits, messageBits, N, lengthCycP);
+lengthCycP = 60;
+% z = bitsToOFDM(estimationBits, messageBits, N, lengthCycP);
 z = 0.8.^(0:N-1)';                   % original signal
 NN = 2^14;                           % Number of frequency grid points
 f = (0:NN-1)/NN;
 semilogy(f,abs(fft(z,NN)))           % Check transform
 xlabel('Relative frequency [f/fs]', 'Interpreter', 'latex', 'FontSize', 20);
+%% Test of bitsToOFDM and back
+N = 128;
+lengthCycP = 60;
+% Generate random bit sequence
+messageBits = 2*round(rand(1,2*N))-1;
+% Generate random bit for the 'known' messege
+estimationBits = 2*round(rand(1,2*N))-1;
+
+z = bitsToOFDM(estimationBits, messageBits, N, lengthCycP);
+[y, H] = testchannelLab1A(z);
+b = iOFDMToBits(y, estimationBits, lengthCycP, N);
 
 %% Now upsampling
 R = 5;
