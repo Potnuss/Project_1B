@@ -1,0 +1,1 @@
+function [zz] = bitsToOFDM(knownBits, sentBits1, n, cycP)
