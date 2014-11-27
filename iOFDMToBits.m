@@ -1,6 +1,6 @@
-function [b] = iOFDMToBits(y, knownBits, cycP, N)
+function [b, H_est] = iOFDMToBits(y, knownBits, cycP, N)
 E = 1;
-synchError = 0;
+synchError = -70;
 % Generate known s(k)
     SknownVector = zeros(1, N);
     
@@ -23,6 +23,7 @@ synchError = 0;
     % Estimate filter
     s = SknownVector.';
     H_est = known_r./s;
+   
 
     % Estimation of channel
     conjH = conj(H_est);
