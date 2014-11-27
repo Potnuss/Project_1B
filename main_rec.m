@@ -9,6 +9,8 @@ plot(yrec)
 %% Modify samples 
 start = 6564;
 % slut = 1.621e4;
+yreec = load('yreec.mat');
+yrec = yreec.yrec;
 zmr = yrec(start:start+2112-1);
 figure
 plot(zmr)
@@ -58,3 +60,28 @@ disp(biterrorrate);
 
 
 
+%%
+
+% from y(n) to bits (need to add some synchronization)
+iterator = start:10;
+start = -80;
+errors = zeros(size(start:10));
+sendm = text2bit('raman potnus daniel marko ramana');
+
+for i = iterator
+    
+    synchError = i;
+    b = iOFDMToBits(y, estimationBits, lengthCycP, N, synchError);
+    
+    bb = (b + 1)./2;
+%     message = bit2text(bb);
+
+%     recm = text2bit(message); 
+    
+    errors(i-start+1) = sum(abs(bb - sendm));
+
+end
+disp(message);
+figure
+plot(errors)
+title('Different bit error rates')
