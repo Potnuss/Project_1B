@@ -1,6 +1,6 @@
-function [b, H_est] = iOFDMToBits(y, knownBits, cycP, N)
+function [b, H_est] = iOFDMToBits(y, knownBits, cycP, N, se)
 E = 1;
-synchError = -70;
+synchError = se;
 % Generate known s(k)
     SknownVector = zeros(1, N);
     
