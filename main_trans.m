@@ -8,14 +8,19 @@ NN = 2^14;                           % Number of frequency grid points
 f = (0:NN-1)/NN;
 semilogy(f,abs(fft(z,NN)))           % Check transform
 xlabel('Relative frequency [f/fs]', 'Interpreter', 'latex', 'FontSize', 20);
+%% Text2bit
+estimationBits = text2bit('suckadickabcdefgsuckadickabcdefg');
 %% SENDER test of hole chain
 clc, clear variables
 
 N = 128;
 NN = 2^14;   
-lengthCycP = 60;
+lengthCycP = 80;
 % Generate random bit sequence
-messageBits = 2*round(rand(1,2*N))-1;
+rng(4);
+%messageBits = 2*round(rand(1,2*N))-1;
+% messageBits = text2bit('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+messageBits = text2bit('raman potnus daniel marko ramana');
 estimationBits = 2*round(rand(1,2*N))-1;
 
 % Make z(n)
@@ -38,9 +43,17 @@ zm = modulate(zi,fs,fc,NN);
 %Make real
 zmr = real(zm);
 
-%Send through audio channel
-sigma = 0.1;
-yrec = simulate_audio_channel( zmr, sigma );
+% %Send through simulated audio channel
+% sigma = 0.1;
+% yrec = simulate_audio_channel( zmr, sigma );
+
+% Send through wav
+
+% zmr = [zmr zeros(size(zmr))];
+
+wavplay([zmr zmr*0],fs);
+
+
 %% RECIEVER test of hole chain (need to add some synchronization)
 %Demodulation
 %m = demodulate(yrec,fs,fc,NN,zi)
@@ -68,6 +81,14 @@ z = bitsToOFDM(estimationBits, messageBits, N, lengthCycP);
 [y, H] = testchannelLab1A(z);
 b = iOFDMToBits(y, estimationBits, lengthCycP, N);
 
+%% Test code, transmitter side
+fs = 22050;
+% sampling frequency
+t = 0:1/fs:10; % a time reference
+f0 = 1000;
+% a transmitted signal frequency
+x = sin(2*pi*f0*t');
+wavplay([x x*0],fs);
 %% Now upsampling
 R = 5;
 zu = upsample(z, R)
