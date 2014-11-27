@@ -37,6 +37,13 @@ yi = conv(yib,B);
 %Down sampling
 D = 5;
 y = yi(1:D:end);
+start = -80;
+stop = 10;
+clc
+BER = findSynchError(start, stop, y, estimationBits, lengthCycP, N);
+plot(start:stop,BER);
+
+%%
 
 % from y(n) to bits (need to add some synchronization)
 [b H_est]= iOFDMToBits(y, estimationBits, lengthCycP, N);
@@ -65,7 +72,7 @@ disp(biterrorrate);
 % from y(n) to bits (need to add some synchronization)
 iterator = start:10;
 start = -80;
-errors = zeros(size(start:10));
+errors = zeros(size(start:130));
 sendm = text2bit('raman potnus daniel marko ramana');
 
 for i = iterator
