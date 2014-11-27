@@ -39,19 +39,28 @@ plot(totalCh)
 %------------------------
 % Script for function 
 %------------------------
-mvngAvgL = 40; % Length of moving average filter
-checkBack = 4; % Comparison to previous Average
-switchFactor = 1.3; % Rate of Change between averages neccessary in order to consider signal as begun
+totalCh = yrec;
+hold on
+plot(yrec)
+%plot([1 length(yrec)],[mean(yrec) mean(yrec)],'r')
+%plot([1 length(yrec)],[5*var(yrec) 5*var(yrec)],'g')
+%
+mvngAvgL = 250; % Length of moving average filter
+checkBack = 200; % Comparison to previous Average
+switchFactor = 10; % Rate of Change between averages neccessary in order to consider signal as begun
 % --- 
 previousAverages = [];
 currentAverage = 0;
+previousVariances = [];
+currentVariance = 0;
 sampelStamps = []; % Potential start samples of signal
 
 for k = 1:length(totalCh)-mvngAvgL
    currentAverage = sum((totalCh(k:(k+mvngAvgL-1))))/mvngAvgL; 
    previousAverages = [previousAverages currentAverage]; %#ok<AGROW>
+   currentVariance = var(totalCh(k:(k+mvngAvgL-1)));
    
-   if k > 10
+   if k > 200
     if (currentAverage/previousAverages(k-checkBack) > switchFactor)
            sampelStamps = [sampelStamps k+mvngAvgL-checkBack]; %#ok<AGROW>
     end
