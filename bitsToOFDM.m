@@ -1,6 +1,6 @@
-function [zz] = bitsToOFDM(knownBits, sentBits1, N, cycP)
+function [zz] = bitsToOFDM(knownBits, sentBits1, N, cycP, E)
 
-    E = 10;
+    %E = 10; added as parameter
 
     % Allocate memory
     Svector1 = zeros(1, N);

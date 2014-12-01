@@ -1,94 +1,108 @@
 
 %% Record received data
+% close all
+% yrec = wavrecord(5*fs,fs);
+%% Load stored yrec (instead of recording)
+clear all
+load('yreec.mat');
+%% Use sigstart on yrec to get startsample
 close all
-yrec = wavrecord(5*fs,fs);
-%%
-plot(yrec)
-%plot(abs(fft(yrec)))
+% plot(yrec)
 
-%% Modify samples 
-start = 6564;
-% slut = 1.621e4;
-yreec = load('yreec.mat');
-yrec = yreec.yrec;
-zmr = yrec(start:start+2112-1);
+startsample = sigStart(yrec, 'plot');
+startsample = startsample - 100; %factor 5 : 100samples here is 20samples for synkerror
+%% Modify samples - Cut yrec to right length
+close all
+% startsample = 6564;
+% startsample = 1.621e4;
+zmr = yrec(startsample:startsample+2112-1);
+% zmr = yrec(startsample:startsample+2045-1);
 figure
 plot(zmr)
 
 
-%% RECIEVER test of hole chain (need to add some synchronization)
-
+%% RECIEVER first part
 close all
+%Parameters
+fs = 22050;      % Sampling frequency
+fc = 4000;       % Center frequency
+R = 5;           % Upsampling nymber
+N = 128;         % Number of bits to send
+NN = 2^14;       % Number of frequency grid points
+lengthCycP = 80; % Length of cyclic prefix
+E = 1;           % Gain
+
 rng(4);
-N = 128;
-estimationBits = 2*round(rand(1,2*N))-1;
-lengthCycP = 80;
-fs = 22050;
-fc = 4000;
-NN = 2^14;  
+pilotBits = 2*round(rand(1,2*N))-1;
+
+rng(5);
+cheatmessageBits = 2*round(rand(1, 2*N)) - 1;
+cheatmessageBits = sendm;%right message for yreec.mat
 %Demodulation
 yib = demodulate(zmr,fs,fc,NN,zmr);
 
 %Decimation
-R = 5;
 B = firpm(32,2*[0 0.5/R*0.9 0.5/R*1.6 1/2],[1 1 0 0]);
 yi = conv(yib,B);
 
 %Down sampling
-D = 5;
-y = yi(1:D:end);
+y = yi(1:R:end);
+%% Check BER for different syncerrors between start and stop
+close all
+cheatmessageBits = sendm
 start = -80;
 stop = 10;
 clc
-BER = findSynchError(start, stop, y, estimationBits, lengthCycP, N);
-plot(start:stop,BER);
+[BERpilot,BERmessage] = findSynchError(start, stop, y, pilotBits,cheatmessageBits, lengthCycP, N, E);
+plot(start:stop,BERpilot);
+hold on
+plot(start:stop,BERmessage,'r');
+legend('BERpilot','BERmessage')
 
-%%
+%% 
+synchError = -61; %Choose a synchError (check with findSynchError)
+[estmessageBits, H_est, estpilotBits] = iOFDMToBits(y, pilotBits, lengthCycP, N, synchError, E);
 
-% from y(n) to bits (need to add some synchronization)
-[b H_est]= iOFDMToBits(y, estimationBits, lengthCycP, N);
-
-%Plot the recieved
+%Plot the recieved estmessagebits
 figure
 stem(abs(H_est))
+title('stem(abs(Hest))')
 figure 
 stem(angle(H_est))
-bb = (b + 1)./2;
-message = bit2text(bb);
-disp(message);
-recm = text2bit(message); 
-sendm = text2bit('raman potnus daniel marko ramana');
-% sendm = text2bit('abcdefghabcdefghabcdefghabcdefhg');
-% sendm = text2bit('FreedomfromWantisthethirdoftheFo');
-% sendm = text2bit('paintingsbyAmericanartistNormanR');
-% sendm = text2bit('commonlyunderstoodoraccepteduniv');
-biterrorrate = sum(abs(recm - sendm));
-disp(biterrorrate);
+title('stem(angle(Hest))')
+
+%Check bitterror
+estmessageBits01 = (estmessageBits + 1)./2;%convert to 1,0
+cheatmessageBits01 = (cheatmessageBits + 1)./2;%convert to 1,0
+biterrors = sum(abs(estmessageBits01 - cheatmessageBits01));
+disp('Bit errors for recieved message');
+disp(biterrors);
+disp('with sycherror');
+disp(synchError);
 
 
+%% Används ej? gammal kod
 
-%%
 
-
-start = -80;
-iterator = start:10;
-errors = zeros(size(start:130));
-sendm = text2bit('raman potnus daniel marko ramana');
-
-for i = iterator
-    
-    synchError = i;
-    b = iOFDMToBits(y, estimationBits, lengthCycP, N, synchError);
-    
-    bb = (b + 1)./2;
-%     message = bit2text(bb);
-
-%     recm = text2bit(message); 
-    
-    errors(i-start+1) = sum(abs(bb - sendm));
-
-end
-disp(message);
-figure
-plot(errors)
-title('Different bit error rates')
+% start = -80;
+% iterator = start:10;
+% errors = zeros(size(start:130));
+% sendm = text2bit('raman potnus daniel marko ramana');
+% 
+% for i = iterator
+%     
+%     synchError = i;
+%     b = iOFDMToBits(y, pilotBits, lengthCycP, N, synchError);%update with new parameters
+%     
+%     bb = (b + 1)./2;
+% %     message = bit2text(bb);
+% 
+% %     recm = text2bit(message); 
+%     
+%     errors(i-start+1) = sum(abs(bb - sendm));
+% 
+% end
+% disp(message);
+% figure
+% plot(errors)
+% title('Different bit error rates')

@@ -8,20 +8,16 @@ R = 5;           % Upsampling nymber
 N = 128;         % Number of bits to send
 NN = 2^14;       % Number of frequency grid points
 lengthCycP = 80; % Length of cyclic prefix
-rng(1);          % Seed for int generation
+E = 1;           % Gain
 
-% Create data to send
-% messageBits = text2bit('raman potnus daniel marko ramana');
-% messageBits = text2bit('abcdefghabcdefghabcdefghabcdefhg');
-% messageBits = text2bit('FreedomfromWantisthethirdoftheFo');
-% messageBits = text2bit('paintingsbyAmericanartistNormanR');
-% messageBits = text2bit('commonlyunderstoodoraccepteduniv');
-estimationBits = 2*round(rand(1, 2*N)) - 1;
+rng(1);          % Seed for int generation
+pilotBits = 2*round(rand(1, 2*N)) - 1;
+
 rng(5);
 messageBits = 2*round(rand(1, 2*N)) - 1;
 
 % Make z(n)
-z = bitsToOFDM(estimationBits, messageBits, N, lengthCycP);
+z = bitsToOFDM(pilotBits, messageBits, N, lengthCycP, E);
 
 % Upsample
 zu = upsample(z, length(z), R);
@@ -37,4 +33,4 @@ zm = modulate(zi, fs, fc, NN);
 zmr = real(zm);
 
 % Send signal
-wavplay([zmr zmr*0], fs);
+% wavplay([zmr zmr*0], fs);
