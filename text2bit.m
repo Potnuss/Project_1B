@@ -27,7 +27,7 @@ function bitStream = text2bit(message)
         
        bitStream(k) = bitStreamMat(1 + idivide(int32(k-1),int32(8),'floor'), a);
        if bitStream(k) == 48
-           bitStream(k) = 0;
+           bitStream(k) = -1;
        else
            bitStream(k) = 1;
        end

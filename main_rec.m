@@ -69,9 +69,9 @@ disp(biterrorrate);
 
 %%
 
-% from y(n) to bits (need to add some synchronization)
-iterator = start:10;
+
 start = -80;
+iterator = start:10;
 errors = zeros(size(start:130));
 sendm = text2bit('raman potnus daniel marko ramana');
 
