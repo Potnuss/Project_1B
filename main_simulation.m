@@ -32,12 +32,8 @@ zm = modulate(zi, fs, fc, NN);%length(zm)=length(zi)
 % Make reallength(zmr)=length(zm)
 zmr = real(zm);
 
-yrec = simulate_audio_channel(zmr, 0.0);
-plot(yrec)
+yrec = simulate_audio_channel(zmr, 0.1);
 
-%% Record received data
-close all
-plot(yrec)
 
 %% Use sigstart on yrec to get startsample
 % startsample = sigStart(yrec, 'plot');
@@ -47,14 +43,14 @@ startsample = 64010; %factor 5 : 100samples here is 20samples for synkerror
 
 fs = 22050;      % Sampling frequency
 fc = 4000;       % Center frequency
-R = 5;           % Upsampling nymber
+R = 10;           % Upsampling nymber
 N = 128;         % Number of bits to send
 NN = 2^14;       % Number of frequency grid points
 lengthCycP = 80; % Length of cyclic prefix
 E = 1;           % Gain
 
 %Pilots
-rng(4);
+rng(1);
 pilotBits = 2*round(rand(1,2*N))-1;
 %Message
 rng(5);
@@ -62,16 +58,12 @@ cheatmessageBits = 2*round(rand(1, 2*N)) - 1;
 % cheatmessageBits = text2bit('raman potnus daniel marko ramana');%right message for yreec.mat
 
 %% Modify samples - Cut yrec to right length
-close all
-% startsample = 6564;
+
 lengthB = 33; %length of filter B
 lengthzmr = (lengthCycP+N+lengthCycP+N)*R + lengthB - 1;
 zmr = yrec(startsample:startsample+lengthzmr-1);
-figure
-plot(zmr)
 
 %% RECIEVER first part
-close all
 
 %Demodulation
 yib = demodulate(zmr,fs,fc,NN,zmr);
@@ -80,18 +72,24 @@ yib = demodulate(zmr,fs,fc,NN,zmr);
 B = firpm(32,2*[0 0.5/R*0.9 0.5/R*1.6 1/2],[1 1 0 0]);
 yi = conv(yib,B);
 
+
 %Down sampling
 y = yi(1:R:end);
 %% Check BER for different syncerrors between start and stop
-close all
 start = -80;
-stop = 10;
-clc
+stop = 0;
+
 [BERpilot,BERmessage] = findSynchError(start, stop, y, pilotBits,cheatmessageBits, lengthCycP, N, E);
-plot(start:stop,BERpilot);
+
+figure(1)
+clf
 hold on
+plot(start:stop,BERpilot);
 plot(start:stop,BERmessage,'r');
 legend('BERpilot','BERmessage')
+
+figure(2)
+plot(yrec)
 
 %% Decode at one specific syncerror
 clc
@@ -99,10 +97,12 @@ synchError = -40; %Choose a synchError (check with findSynchError)
 [estmessageBits, H_est, estpilotBits] = iOFDMToBits(y, pilotBits, lengthCycP, N, synchError, E);
 
 %Plot the recieved estmessagebits
-figure
+figure(3)
+clf
 stem(abs(H_est))
 title('stem(abs(Hest))')
-figure 
+
+figure(4)
 stem(angle(H_est))
 title('stem(angle(Hest))')
 
