@@ -32,7 +32,7 @@ zm = modulate(zi, fs, fc, NN);%length(zm)=length(zi)
 % Make reallength(zmr)=length(zm)
 zmr = real(zm);
 
-yrec = simulate_audio_channel(zmr, 0.1);
+yrec = simulate_audio_channel(zmr, 0.0);
 
 
 %% Use sigstart on yrec to get startsample
