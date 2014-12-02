@@ -9,9 +9,8 @@ load('yreec.mat');
 close all
 plot(yrec)
 % startsample = sigStart(yrec, 'plot');
-%try -300samples below
 startsample = 1.0116e4
-startsample = startsample -170 ; %factor 5 : 100samples here is 20samples for synkerror
+startsample = startsample -70 ; %factor 5 : 100samples here is 20samples for synkerror
 %% Parameters
 
 fs = 22050;      % Sampling frequency
@@ -31,7 +30,6 @@ cheatmessageBits = 2*round(rand(1, 2*N)) - 1;
 % cheatmessageBits = text2bit('raman potnus daniel marko ramana');%right message for yreec.mat
 %% Modify samples - Cut yrec to right length
 close all
-% startsample = 6564;
 lengthB = 33; %length of filter B
 lengthzmr = (lengthCycP+N+lengthCycP+N)*R + lengthB - 1;
 zmr = yrec(startsample:startsample+lengthzmr-1);
@@ -52,13 +50,14 @@ y = yi(1:R:end);
 %% Check BER for different syncerrors between start and stop
 close all
 start = -80;
-stop = 5;
+stop = 0;
 clc
 [BERpilot,BERmessage] = findSynchError(start, stop, y, pilotBits,cheatmessageBits, lengthCycP, N, E);
-plot(start:stop,BERpilot);
-hold on
-plot(start:stop,BERmessage,'r');
-legend('BERpilot','BERmessage')
+
+plot(start:stop,BERmessage);
+title('Bit errors for bit message')
+xlabel('Shifted samples in baseband')
+ylabel('Nr of bit error')
 
 %% Decode at one specific syncerror
 synchError = 0; %Choose a synchError (check with findSynchError)
