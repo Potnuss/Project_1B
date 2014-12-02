@@ -79,30 +79,3 @@ disp('Bit errors for recieved message');
 disp(biterrors);
 disp('with sycherror');
 disp(synchError);
-
-
-%% Används ej? gammal kod
-
-
-% start = -80;
-% iterator = start:10;
-% errors = zeros(size(start:130));
-% sendm = text2bit('raman potnus daniel marko ramana');
-% 
-% for i = iterator
-%     
-%     synchError = i;
-%     b = iOFDMToBits(y, pilotBits, lengthCycP, N, synchError);%update with new parameters
-%     
-%     bb = (b + 1)./2;
-% %     message = bit2text(bb);
-% 
-% %     recm = text2bit(message); 
-%     
-%     errors(i-start+1) = sum(abs(bb - sendm));
-% 
-% end
-% disp(message);
-% figure
-% plot(errors)
-% title('Different bit error rates')
