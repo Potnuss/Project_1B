@@ -10,8 +10,8 @@ close all
 plot(yrec)
 % startsample = sigStart(yrec, 'plot');
 %try -300samples below
-startsample = 1.6118e4
-startsample = startsample -300 ; %factor 5 : 100samples here is 20samples for synkerror
+startsample = 1.0116e4
+startsample = startsample -170 ; %factor 5 : 100samples here is 20samples for synkerror
 %% Parameters
 
 fs = 22050;      % Sampling frequency
@@ -23,10 +23,10 @@ lengthCycP = 80; % Length of cyclic prefix
 E = 100;           % Gain
 
 %Pilots
-rng(46);
+rng(48);
 pilotBits = 2*round(rand(1,2*N))-1;
 %Message
-rng(16);
+rng(18);
 cheatmessageBits = 2*round(rand(1, 2*N)) - 1;
 % cheatmessageBits = text2bit('raman potnus daniel marko ramana');%right message for yreec.mat
 %% Modify samples - Cut yrec to right length
@@ -51,7 +51,7 @@ yi = conv(yib,B);
 y = yi(1:R:end);
 %% Check BER for different syncerrors between start and stop
 close all
-start = -40;
+start = -80;
 stop = 5;
 clc
 [BERpilot,BERmessage] = findSynchError(start, stop, y, pilotBits,cheatmessageBits, lengthCycP, N, E);
