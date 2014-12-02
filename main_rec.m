@@ -10,7 +10,7 @@ close all
 plot(yrec)
 % startsample = sigStart(yrec, 'plot');
 %try -300samples below
-startsample = 1.3015e4
+startsample = 1.6118e4
 startsample = startsample -300 ; %factor 5 : 100samples here is 20samples for synkerror
 %% Parameters
 
@@ -23,10 +23,10 @@ lengthCycP = 80; % Length of cyclic prefix
 E = 100;           % Gain
 
 %Pilots
-rng(42);
+rng(46);
 pilotBits = 2*round(rand(1,2*N))-1;
 %Message
-rng(12);
+rng(16);
 cheatmessageBits = 2*round(rand(1, 2*N)) - 1;
 % cheatmessageBits = text2bit('raman potnus daniel marko ramana');%right message for yreec.mat
 %% Modify samples - Cut yrec to right length
