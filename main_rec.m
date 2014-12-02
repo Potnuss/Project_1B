@@ -10,20 +10,9 @@ close all
 % plot(yrec)
 
 startsample = sigStart(yrec, 'plot');
-startsample = startsample - 100; %factor 5 : 100samples here is 20samples for synkerror
-%% Modify samples - Cut yrec to right length
-close all
-% startsample = 6564;
-% startsample = 1.621e4;
-zmr = yrec(startsample:startsample+2112-1);
-% zmr = yrec(startsample:startsample+2045-1);
-figure
-plot(zmr)
+startsample = startsample; %factor 5 : 100samples here is 20samples for synkerror
+%% Parameters
 
-
-%% RECIEVER first part
-close all
-%Parameters
 fs = 22050;      % Sampling frequency
 fc = 4000;       % Center frequency
 R = 5;           % Upsampling nymber
@@ -31,13 +20,28 @@ N = 128;         % Number of bits to send
 NN = 2^14;       % Number of frequency grid points
 lengthCycP = 80; % Length of cyclic prefix
 E = 1;           % Gain
+%% Modify samples - Cut yrec to right length
+close all
+% startsample = 6564;
+% startsample = 1.621e4;
+lengthB = 33; %length of filter B
+lengthzmr = (lengthCycP+N+lengthCycP+N)*R + lengthB - 1;
+zmr = yrec(startsample:startsample+lengthzmr-1);
+% zmr = yrec(startsample:startsample+2112-1);
+% zmr = yrec(startsample:startsample+2045-1);
+figure
+plot(zmr)
+
+
+%% RECIEVER first part
+close all
 
 rng(4);
 pilotBits = 2*round(rand(1,2*N))-1;
 
 rng(5);
 cheatmessageBits = 2*round(rand(1, 2*N)) - 1;
-cheatmessageBits = sendm;%right message for yreec.mat
+cheatmessageBits = text2bit('raman potnus daniel marko ramana');%right message for yreec.mat
 %Demodulation
 yib = demodulate(zmr,fs,fc,NN,zmr);
 
