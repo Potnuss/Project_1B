@@ -3,7 +3,7 @@ close all
 load('pontusdaniel141202/p025c80r4212.mat')
 plot(yrec)
 
-rngpilots = 42;
+rngpilots = 42; %#ok<*NASGU>
 rngmessage = 12;
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.3013e4;
@@ -48,7 +48,7 @@ plot(yrec)
 rngpilots = 46;
 rngmessage = 16;
 lengthCycP = 80; % Length of cyclic prefix
-startsample = 1.6105e4
+startsample = 1.6105e4;
 startsample = startsample -330 ;
 %% Load p005c40r4717.mat
 close all
@@ -58,7 +58,7 @@ plot(yrec)
 rngpilots = 47;
 rngmessage = 17;
 lengthCycP = 40; % Length of cyclic prefix
-startsample = 9140
+startsample = 9140;
 startsample = startsample -210 ;
 %% Load p002c80r4818.mat
 close all
@@ -68,7 +68,7 @@ plot(yrec)
 rngpilots = 48;
 rngmessage = 18;
 lengthCycP = 80; % Length of cyclic prefix
-startsample = 1.0795e4
+startsample = 1.0795e4;
 startsample = startsample -650 ; %factor 5 : 100samples here is 20samples for synkerror
 %% General Parameters & Start plot
 fs = 22050;      % Sampling frequency
