@@ -19,7 +19,7 @@ function startSample = sigStart2(rec, trueLength, varargin)
     sampleStop = sampleLarg(end);
     sampleMiddle = sampleStart + (sampleStop - sampleStart)/2;
     
-    startSample = sampleMiddle - trueLength;
+    startSample = sampleMiddle - trueLength/2;
     
     if isArgPlot(varargin)
         figure 
