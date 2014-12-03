@@ -7,7 +7,9 @@ rngpilots = 42;
 rngmessage = 12;
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.3013e4;
-startsample = startsample-290 ;
+startsample = startsample-290
+startsamplesig2 = sigStart2(yrec, tlength(lengthCycP,128,10),0.4,'plot')
+% startsample = startsamplesig2;
 %% Load p025c40r4313.mat
 close all
 load('pontusdaniel141202/p025c40r4313.mat')
@@ -86,10 +88,9 @@ cheatmessageBits = 2*round(rand(1, 2*N)) - 1;
 
 % Modify samples - Cut yrec to right length
 close all
-lengthB = 33; %length of filter B
-lengthzmr = (lengthCycP+N+lengthCycP+N)*R + lengthB - 1;
-lengthzmr =  lengthzmr + 800; %OBS +800!to be able to go +80 shifts
-zmr = yrec(startsample:startsample+lengthzmr-1);
+truelength = tlength(lengthCycP,N,R);
+truelength =  truelength + 800;
+zmr = yrec(startsample:startsample+truelength-1);
 figure
 plot(zmr)
 

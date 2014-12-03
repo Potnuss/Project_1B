@@ -38,7 +38,7 @@ yrec = simulate_audio_channel(zmr, 0.0);
 %% Use sigstart on yrec to get startsample
 % startsample = sigStart(yrec, 'plot');
 
-startsample = 64010; %factor 5 : 100samples here is 20samples for synkerror
+startsample = 64010; %factor 10 : 100samples here is 10samples for synkerror
 %% Parameters
 
 fs = 22050;      % Sampling frequency
