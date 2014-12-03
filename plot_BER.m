@@ -121,9 +121,9 @@ clc
 [BERpilot,BERmessage] = findSynchError(start, stop, y, pilotBits,cheatmessageBits, lengthCycP, N, E);
 
 plot(start:stop,BERmessage);
-title('Bit errors for bit message')
+% title('Bit errors for bit message')
 xlabel('Shifted samples in baseband')
-ylabel('Nr of bit error')
+ylabel('# of bit errors')
 
 %% Decode at one specific syncerror
 synchError = 0; %Choose a synchError (check with findSynchError)
@@ -132,9 +132,13 @@ synchError = 0; %Choose a synchError (check with findSynchError)
 %Plot the recieved estmessagebits
 figure
 stem(abs(H_est))
-title('stem(abs(Hest))')
+% title('stem(abs(Hest))')
+xlabel('Samples');
+ylabel('Amplitude');
 figure 
 stem(angle(H_est))
+xlabel('Samples');
+ylabel('Phase [rad]');
 title('stem(angle(Hest))')
 
 %Check bitterror
