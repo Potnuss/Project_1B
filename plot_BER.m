@@ -192,6 +192,10 @@ disp(synchError);
 
 %% Frequency plotting
 close all
+C = [115 115 115];
+L = [82 82 82];
+fs = 22050;
+NN = 2^14;
 w = (0:NN-1)/NN*fs;
 
 f_yrec = abs(fft(yrec, NN));    % Recorded signal
@@ -201,25 +205,22 @@ f_down = abs(fft(y, NN));
 
 close all
 figure(1)
-plot(w,f_yrec);
-title('yrec')
-xlabel('Frequency [Hz]');
-ylabel('Amplitude');
+plot(w,f_yrec, 'Color', C./255);
+title('Recieved signal', 'Interpreter', 'latex', 'FontSize', 20)
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
 figure(2)
-plot(f_dem);
-title('y_dem')
-xlabel('Frequency [Hz]');
-ylabel('Amplitude');
+plot(f_dem, 'Color', C./255);
+title('Demodulated signal', 'Interpreter', 'latex', 'FontSize', 20)
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
 figure(3)
-plot(f_filt);
-title('y_filt')
-xlabel('Frequency [Hz]');
-ylabel('Amplitude');
+plot(f_filt, 'Color', C./255);
+title('Filtered signal', 'Interpreter', 'latex', 'FontSize', 20)
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
 figure(4)
-plot(f_down);
-title('y_down')
-xlabel('Frequency [Hz]');
-ylabel('Amplitude');
-
-
-
+plot(f_down, 'Color', C./255);
+title('Downsampled signal', 'Interpreter', 'latex', 'FontSize', 20)
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
