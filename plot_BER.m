@@ -8,8 +8,12 @@ rngmessage = 12;
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.3013e4;
 startsample = startsample-290
-startsamplesig2 = sigStart2(yrec, tlength(lengthCycP,128,10),0.4,'plot')
-% startsample = startsamplesig2;
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
 %% Load p025c40r4313.mat
 close all
 load('pontusdaniel141202/p025c40r4313.mat')
@@ -19,7 +23,13 @@ rngpilots = 43;
 rngmessage = 13;
 lengthCycP = 40; % Length of cyclic prefix
 startsample = 1.6644e4;
-startsample = startsample-120 ;
+startsample = startsample-120 
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
 %% Load p015c80r4414.mat
 close all
 load('pontusdaniel141202/p015c80r4414.mat')
@@ -29,7 +39,13 @@ rngpilots = 44;
 rngmessage = 14;
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.5109e4;
-startsample = startsample-250 ;
+startsample = startsample-250 
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
 %% Load p015c40r4515.mat
 close all
 load('pontusdaniel141202/p015c40r4515.mat')
@@ -39,7 +55,13 @@ rngpilots = 45;
 rngmessage = 15;
 lengthCycP = 40; % Length of cyclic prefix
 startsample = 1.8722e4;
-startsample = startsample-270 ;
+startsample = startsample-270
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
 %% Load p005c80r4616.mat
 close all
 load('pontusdaniel141202/p005c80r4616.mat')
@@ -49,7 +71,13 @@ rngpilots = 46;
 rngmessage = 16;
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.6105e4;
-startsample = startsample -330 ;
+startsample = startsample -330
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
 
 noiseAmp = var(yrec(21940:48880))
 sigAmp = var(yrec(16120:19840))
@@ -65,7 +93,13 @@ rngpilots = 47;
 rngmessage = 17;
 lengthCycP = 40; % Length of cyclic prefix
 startsample = 9140;
-startsample = startsample -210 ;
+startsample = startsample -210
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
 %% Load p002c80r4818.mat
 close all
 load('pontusdaniel141202/p002c80r4818.mat')
@@ -75,7 +109,13 @@ rngpilots = 48;
 rngmessage = 18;
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.0795e4;
-startsample = startsample -650 ; %factor 5 : 100samples here is 20samples for synkerror
+startsample = startsample -650
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
 %% General Parameters & Start plot
 fs = 22050;      % Sampling frequency
 fc = 4000;       % Center frequency
