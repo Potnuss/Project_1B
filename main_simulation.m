@@ -38,7 +38,7 @@ yrec = simulate_audio_channel(zmr, 0.0);
 %% Use sigstart on yrec to get startsample
 % startsample = sigStart(yrec, 'plot');
 
-startsample = 64010; %factor 5 : 100samples here is 20samples for synkerror
+startsample = 64010; %factor 10 : 100samples here is 10samples for synkerror
 %% Parameters
 
 fs = 22050;      % Sampling frequency
@@ -81,30 +81,12 @@ stop = 0;
 
 [BERpilot,BERmessage] = findSynchError(start, stop, y, pilotBits,cheatmessageBits, lengthCycP, N, E);
 
-figure(1)
-clf
-hold on
-plot(start:stop,BERpilot);
-plot(start:stop,BERmessage,'r');
-legend('BERpilot','BERmessage')
-
-figure(2)
-plot(yrec)
 
 %% Decode at one specific syncerror
 clc
 synchError = -40; %Choose a synchError (check with findSynchError)
 [estmessageBits, H_est, estpilotBits] = iOFDMToBits(y, pilotBits, lengthCycP, N, synchError, E);
 
-%Plot the recieved estmessagebits
-figure(3)
-clf
-stem(abs(H_est))
-title('stem(abs(Hest))')
-
-figure(4)
-stem(angle(H_est))
-title('stem(angle(Hest))')
 
 %Check biterror
 estmessageBits01 = (estmessageBits + 1)./2;%convert to 1,0
@@ -114,4 +96,30 @@ disp('Bit errors for recieved message');
 disp(biterrors);
 disp('with syncherror');
 disp(synchError);
+
+
+%% Plotting
+
+figure(1)
+clf
+hold on
+% plot(start:stop,BERpilot);
+plot(start:stop,BERmessage,'r');
+xlabel('Offset');
+ylabel('Bit errors')
+% legend('BERpilot','BERmessage')
+
+figure(2)
+clf
+plot(yrec)
+xlabel('Samples')
+ylabel('Amplitude');
+
+%Plot the recieved estmessagebits
+figure(3)
+clf
+stem(abs(H_est))
+
+figure(4)
+stem(angle(H_est))
 
