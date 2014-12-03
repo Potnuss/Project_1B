@@ -1,8 +1,8 @@
-%% Load p025c80r4212.mat
+%% 1 Load p025c80r4212.mat
 close all
 load('pontusdaniel141202/p025c80r4212.mat')
 plot(yrec)
-
+Data = '1';
 rngpilots = 42; %#ok<*NASGU>
 rngmessage = 12;
 lengthCycP = 80; % Length of cyclic prefix
@@ -14,11 +14,11 @@ hold on
 stem(startsample,0.1,'y')
 hold off
 startsample = startsample2;
-%% Load p025c40r4313.mat
+%% 2 Load p025c40r4313.mat
 close all
 load('pontusdaniel141202/p025c40r4313.mat')
 plot(yrec)
-
+Data = '2';
 rngpilots = 43;
 rngmessage = 13;
 lengthCycP = 40; % Length of cyclic prefix
@@ -30,11 +30,11 @@ hold on
 stem(startsample,0.1,'y')
 hold off
 startsample = startsample2;
-%% Load p015c80r4414.mat
+%% 3 Load p015c80r4414.mat
 close all
 load('pontusdaniel141202/p015c80r4414.mat')
 plot(yrec)
-
+Data = '3';
 rngpilots = 44;
 rngmessage = 14;
 lengthCycP = 80; % Length of cyclic prefix
@@ -46,11 +46,11 @@ hold on
 stem(startsample,0.1,'y')
 hold off
 startsample = startsample2;
-%% Load p015c40r4515.mat
+%% 4 Load p015c40r4515.mat
 close all
 load('pontusdaniel141202/p015c40r4515.mat')
 plot(yrec)
-
+Data = '4';
 rngpilots = 45;
 rngmessage = 15;
 lengthCycP = 40; % Length of cyclic prefix
@@ -62,11 +62,11 @@ hold on
 stem(startsample,0.1,'y')
 hold off
 startsample = startsample2;
-%% Load p005c80r4616.mat
+%% 5 Load p005c80r4616.mat
 close all
 load('pontusdaniel141202/p005c80r4616.mat')
 plot(yrec)
-
+Data = '5';
 rngpilots = 46;
 rngmessage = 16;
 lengthCycP = 80; % Length of cyclic prefix
@@ -82,13 +82,11 @@ startsample = startsample2;
 noiseAmp = var(yrec(21940:48880))
 sigAmp = var(yrec(16120:19840))
 SNR = sigAmp/noiseAmp
-
-
-%% Load p005c40r4717.mat
+%% 6 Load p005c40r4717.mat
 close all
 load('pontusdaniel141202/p005c40r4717.mat')
 plot(yrec)
-
+Data = '6';
 rngpilots = 47;
 rngmessage = 17;
 lengthCycP = 40; % Length of cyclic prefix
@@ -100,11 +98,11 @@ hold on
 stem(startsample,0.1,'y')
 hold off
 startsample = startsample2;
-%% Load p002c80r4818.mat
+%% 7 Load p002c80r4818.mat
 close all
 load('pontusdaniel141202/p002c80r4818.mat')
 plot(yrec)
-
+Data = '7';
 rngpilots = 48;
 rngmessage = 18;
 lengthCycP = 80; % Length of cyclic prefix
@@ -164,8 +162,7 @@ plot(start:stop,BERmessage);
 % title('Bit errors for bit message')
 xlabel('Shifted samples in baseband')
 ylabel('# of bit errors')
-
-%% Decode at one specific syncerror
+%% Decode at one specific syncerror, BE and BER
 synchError = 0; %Choose a synchError (check with findSynchError)
 [estmessageBits, H_est, estpilotBits] = iOFDMToBits(y, pilotBits, lengthCycP, N, synchError, E);
 
@@ -185,11 +182,11 @@ ylabel('Phase [rad]');
 estmessageBits01 = (estmessageBits + 1)./2;%convert to 1,0
 cheatmessageBits01 = (cheatmessageBits + 1)./2;%convert to 1,0
 biterrors = sum(abs(estmessageBits01 - cheatmessageBits01));
+disp('Data #')
+disp(Data)
 disp('Bit errors for recieved message');
 disp(biterrors);
-disp('with sycherror');
-disp(synchError);
-
+BER = biterrors/256
 %% Frequency plotting
 close all
 C = [115 115 115];
