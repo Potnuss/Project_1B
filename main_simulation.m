@@ -93,7 +93,7 @@ y = yi(1:R:end);
 % w = ((0:length(yrec)-1)')/5; % Frequency vector
 w = (0:NN-1)/NN*fs;
 
-f_yrec = abs(fft(yrec, NN));    % Recorded signal
+f_yrec = abs(fft(zmr, NN));    % Recorded signal
 f_dem = abs(fft(yib, NN));      % Demodulated signal
 f_filt = abs(fft(yi, NN));
 f_down = abs(fft(y, NN));
