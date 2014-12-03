@@ -139,7 +139,7 @@ figure
 stem(angle(H_est))
 xlabel('Samples');
 ylabel('Phase [rad]');
-title('stem(angle(Hest))')
+% title('stem(angle(Hest))')
 
 %Check bitterror
 estmessageBits01 = (estmessageBits + 1)./2;%convert to 1,0
