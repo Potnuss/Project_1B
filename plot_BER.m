@@ -50,6 +50,12 @@ rngmessage = 16;
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.6105e4;
 startsample = startsample -330 ;
+
+noiseAmp = var(yrec(21940:48880))
+sigAmp = var(yrec(16120:19840))
+SNR = sigAmp/noiseAmp
+
+
 %% Load p005c40r4717.mat
 close all
 load('pontusdaniel141202/p005c40r4717.mat')
@@ -139,3 +145,37 @@ disp('Bit errors for recieved message');
 disp(biterrors);
 disp('with sycherror');
 disp(synchError);
+
+%% Frequency plotting
+close all
+w = (0:NN-1)/NN*fs;
+
+f_yrec = abs(fft(yrec, NN));    % Recorded signal
+f_dem = abs(fft(yib, NN));      % Demodulated signal
+f_filt = abs(fft(yi, NN));
+f_down = abs(fft(y, NN));
+
+close all
+figure(1)
+plot(w,f_yrec);
+title('yrec')
+xlabel('Frequency [Hz]');
+ylabel('Amplitude');
+figure(2)
+plot(f_dem);
+title('y_dem')
+xlabel('Frequency [Hz]');
+ylabel('Amplitude');
+figure(3)
+plot(f_filt);
+title('y_filt')
+xlabel('Frequency [Hz]');
+ylabel('Amplitude');
+figure(4)
+plot(f_down);
+title('y_down')
+xlabel('Frequency [Hz]');
+ylabel('Amplitude');
+
+
+
