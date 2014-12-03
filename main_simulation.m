@@ -7,9 +7,12 @@ fc = 4000;       % Center frequency
 R = 10;           % Upsampling nymber
 N = 128;         % Number of bits to send
 NN = 2^14;       % Number of frequency grid points
-lengthCycP = 80; % Length of cyclic prefix
 E = 1;           % Gain
 
+
+lengthCycP = 80; % Length of cyclic prefix
+
+    
 rng(1);          % Seed for int generation
 pilotBits = 2*round(rand(1, 2*N)) - 1;
 
@@ -32,18 +35,32 @@ zm = modulate(zi, fs, fc, NN);%length(zm)=length(zi)
 % Make reallength(zmr)=length(zm)
 zmr = real(zm);
 
-yrec = simulate_audio_channel(zmr, 0.0);
+yrec = simulate_audio_channel(zmr, 0.8);
+
+noiseAmp = var(yrec(23170:45850));
+sigAmp = var(yrec(63930:68120));
+SNR = sigAmp/noiseAmp;
+
+n = (0:length(yrec)-1)';
+
+% yrec = yrec + sin(3800*2*pi*(1/22050)*n);
+t = linspace(0, 5, length(yrec));
+
+figure(2)
+clf
+plot(t, yrec/200)  % Ändra scale factor
+
+
+
 
 
 %% Use sigstart on yrec to get startsample
-% startsample = sigStart(yrec, 'plot');
-
 startsample = 64010; %factor 5 : 100samples here is 20samples for synkerror
-%% Parameters
+% Parameters
 
 fs = 22050;      % Sampling frequency
 fc = 4000;       % Center frequency
-R = 10;           % Upsampling nymber
+R = 10;          % Upsampling nymber
 N = 128;         % Number of bits to send
 NN = 2^14;       % Number of frequency grid points
 lengthCycP = 80; % Length of cyclic prefix
@@ -57,13 +74,13 @@ rng(5);
 cheatmessageBits = 2*round(rand(1, 2*N)) - 1;
 % cheatmessageBits = text2bit('raman potnus daniel marko ramana');%right message for yreec.mat
 
-%% Modify samples - Cut yrec to right length
+% Modify samples - Cut yrec to right length
 
 lengthB = 33; %length of filter B
 lengthzmr = (lengthCycP+N+lengthCycP+N)*R + lengthB - 1;
 zmr = yrec(startsample:startsample+lengthzmr-1);
 
-%% RECIEVER first part
+% RECIEVER first part
 
 %Demodulation
 yib = demodulate(zmr,fs,fc,NN,zmr);
@@ -75,6 +92,39 @@ yi = conv(yib,B);
 
 %Down sampling
 y = yi(1:R:end);
+
+
+% Plotting 1
+% w = ((0:length(yrec)-1)')/5; % Frequency vector
+w = (0:NN-1)/NN*fs;
+
+f_yrec = abs(fft(yrec, NN));    % Recorded signal
+f_dem = abs(fft(yib, NN));      % Demodulated signal
+f_filt = abs(fft(yi, NN));
+f_down = abs(fft(y, NN));
+
+close all
+figure(1)
+plot(w,f_yrec);
+title('yrec')
+xlabel('Frequency [Hz]');
+ylabel('Amplitude');
+figure(2)
+plot(f_dem);
+title('y_dem')
+xlabel('Frequency [Hz]');
+ylabel('Amplitude');
+figure(3)
+plot(f_filt);
+title('y_filt')
+xlabel('Frequency [Hz]');
+ylabel('Amplitude');
+figure(4)
+plot(f_down);
+title('y_down')
+xlabel('Frequency [Hz]');
+ylabel('Amplitude');
+
 %% Check BER for different syncerrors between start and stop
 start = -80;
 stop = 0;
@@ -98,7 +148,8 @@ disp('with syncherror');
 disp(synchError);
 
 
-%% Plotting
+
+%% Plotting 2
 
 figure(1)
 clf
@@ -119,7 +170,13 @@ ylabel('Amplitude');
 figure(3)
 clf
 stem(abs(H_est))
+xlabel('Samples')
+ylabel('Linear amplitude');
+
 
 figure(4)
 stem(angle(H_est))
+xlabel('Samples')
+ylabel('Phase shift [rad]');
+
 
