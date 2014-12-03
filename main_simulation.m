@@ -50,14 +50,9 @@ figure(2)
 clf
 plot(t, yrec/200)  % Ändra scale factor
 
-
-
-
-
 %% Use sigstart on yrec to get startsample
 startsample = 64010; %factor 5 : 100samples here is 20samples for synkerror
-% Parameters
-
+%% Parameters
 fs = 22050;      % Sampling frequency
 fc = 4000;       % Center frequency
 R = 10;          % Upsampling nymber
