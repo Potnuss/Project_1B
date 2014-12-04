@@ -1,81 +1,122 @@
-%% Load p025c80r4212.mat
+%% 1 Load p025c80r4212.mat
 close all
 load('pontusdaniel141202/p025c80r4212.mat')
 plot(yrec)
-
-rngpilots = 42; %#ok<*NASGU>
-rngmessage = 12;
+Data = '1';
+rngpilots = 42 %#ok<*NASGU>
+rngmessage = 12
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.3013e4;
 startsample = startsample-290
-startsamplesig2 = sigStart2(yrec, tlength(lengthCycP,128,10),0.4,'plot')
-% startsample = startsamplesig2;
-%% Load p025c40r4313.mat
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
+noiseAmp = var(yrec(25000:30000))
+sigAmp = var(yrec(12470:16730))
+SNR = sigAmp/noiseAmp
+%% 2 Load p025c40r4313.mat
 close all
 load('pontusdaniel141202/p025c40r4313.mat')
 plot(yrec)
-
-rngpilots = 43;
-rngmessage = 13;
+Data = '2';
+rngpilots = 43
+rngmessage = 13
 lengthCycP = 40; % Length of cyclic prefix
 startsample = 1.6644e4;
-startsample = startsample-120 ;
-%% Load p015c80r4414.mat
+startsample = startsample-120 
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
+%% 3 Load p015c80r4414.mat
 close all
 load('pontusdaniel141202/p015c80r4414.mat')
 plot(yrec)
-
-rngpilots = 44;
-rngmessage = 14;
+Data = '3';
+rngpilots = 44
+rngmessage = 14
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.5109e4;
-startsample = startsample-250 ;
-%% Load p015c40r4515.mat
+startsample = startsample-250 
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
+%% 4 Load p015c40r4515.mat
 close all
 load('pontusdaniel141202/p015c40r4515.mat')
 plot(yrec)
-
-rngpilots = 45;
-rngmessage = 15;
+Data = '4';
+rngpilots = 45
+rngmessage = 15
 lengthCycP = 40; % Length of cyclic prefix
 startsample = 1.8722e4;
-startsample = startsample-270 ;
-%% Load p005c80r4616.mat
+startsample = startsample-270
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
+%% 5 Load p005c80r4616.mat
 close all
 load('pontusdaniel141202/p005c80r4616.mat')
 plot(yrec)
-
-rngpilots = 46;
-rngmessage = 16;
+Data = '5';
+rngpilots = 46
+rngmessage = 16
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.6105e4;
-startsample = startsample -330 ;
+startsample = startsample -330
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
 
 noiseAmp = var(yrec(21940:48880))
 sigAmp = var(yrec(16120:19840))
 SNR = sigAmp/noiseAmp
-
-
-%% Load p005c40r4717.mat
+%% 6 Load p005c40r4717.mat
 close all
 load('pontusdaniel141202/p005c40r4717.mat')
 plot(yrec)
-
-rngpilots = 47;
-rngmessage = 17;
+Data = '6';
+rngpilots = 47
+rngmessage = 17
 lengthCycP = 40; % Length of cyclic prefix
 startsample = 9140;
-startsample = startsample -210 ;
-%% Load p002c80r4818.mat
+startsample = startsample -210
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
+%% 7 Load p002c80r4818.mat
 close all
 load('pontusdaniel141202/p002c80r4818.mat')
 plot(yrec)
-
-rngpilots = 48;
-rngmessage = 18;
+Data = '7';
+rngpilots = 48
+rngmessage = 18
 lengthCycP = 80; % Length of cyclic prefix
 startsample = 1.0795e4;
-startsample = startsample -650 ; %factor 5 : 100samples here is 20samples for synkerror
+startsample = startsample -650
+startsample2 = sigStart2(yrec, tlength(lengthCycP,128,10),lengthCycP,'plot')
+diff = startsample-startsample2
+hold on
+stem(startsample,0.1,'y')
+hold off
+startsample = startsample2;
 %% General Parameters & Start plot
 fs = 22050;      % Sampling frequency
 fc = 4000;       % Center frequency
@@ -120,62 +161,106 @@ stop = lengthCycP-0;
 clc
 [BERpilot,BERmessage] = findSynchError(start, stop, y, pilotBits,cheatmessageBits, lengthCycP, N, E);
 
-plot(start:stop,BERmessage);
-title('Bit errors for bit message')
+% plot(start:stop,BERmessage);
+% title('Bit errors for bit message')
 xlabel('Shifted samples in baseband')
-ylabel('Nr of bit error')
-
-%% Decode at one specific syncerror
+ylabel('# of bit errors')
+% Decode at one specific syncerror, BE and BER
 synchError = 0; %Choose a synchError (check with findSynchError)
 [estmessageBits, H_est, estpilotBits] = iOFDMToBits(y, pilotBits, lengthCycP, N, synchError, E);
 
 %Plot the recieved estmessagebits
-figure
-stem(abs(H_est))
-title('stem(abs(Hest))')
-figure 
-stem(angle(H_est))
-title('stem(angle(Hest))')
+% figure
+% stem(abs(H_est))
+% % title('stem(abs(Hest))')
+% xlabel('Samples');
+% ylabel('Amplitude');
+% figure 
+% stem(angle(H_est))
+% xlabel('Samples');
+% ylabel('Phase [rad]');
+% title('stem(angle(Hest))')
 
 %Check bitterror
 estmessageBits01 = (estmessageBits + 1)./2;%convert to 1,0
 cheatmessageBits01 = (cheatmessageBits + 1)./2;%convert to 1,0
 biterrors = sum(abs(estmessageBits01 - cheatmessageBits01));
+disp('Data #')
+disp(Data)
 disp('Bit errors for recieved message');
 disp(biterrors);
-disp('with sycherror');
-disp(synchError);
-
-%% Frequency plotting
+BER = biterrors/256
+% Frequency plotting
 close all
+C = [115 115 115];
+L = [82 82 82];
+fs = 22050;
+NN = 2^14;
 w = (0:NN-1)/NN*fs;
-
-f_yrec = abs(fft(yrec, NN));    % Recorded signal
+load('sims_ws2')
+f_yrec = abs(fft(zmr, NN));    % Recorded signal
 f_dem = abs(fft(yib, NN));      % Demodulated signal
 f_filt = abs(fft(yi, NN));
 f_down = abs(fft(y, NN));
 
+X1 = 500;
+Y1 = 500;
+Leng = 1000;
+Hei = 400;
+
 close all
-figure(1)
-plot(w,f_yrec);
-title('yrec')
-xlabel('Frequency [Hz]');
-ylabel('Amplitude');
-figure(2)
-plot(f_dem);
-title('y_dem')
-xlabel('Frequency [Hz]');
-ylabel('Amplitude');
-figure(3)
-plot(f_filt);
-title('y_filt')
-xlabel('Frequency [Hz]');
-ylabel('Amplitude');
-figure(4)
-plot(f_down);
-title('y_down')
-xlabel('Frequency [Hz]');
-ylabel('Amplitude');
+f1=figure(1);
+set(f1, 'Position', [X1 Y1 Leng Hei])
+subplot(211)
+plot(w, f_yrec, 'Color', C./255);
+title('Recieved signal', 'Interpreter', 'latex', 'FontSize', 20, 'Color', C./255);
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+axis([0 22.05e3 0 18])
+subplot(212)
+plot(w, f_yrec2, 'Color', C./255);
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+axis([0 22.05e3 0 900])
 
+f2=figure(2);
+set(f2, 'Position', [X1 Y1 Leng Hei])
+subplot(211)
+plot(w, f_dem, 'Color', C./255);
+title('Demodulated signal', 'Interpreter', 'latex', 'FontSize', 20, 'Color', C./255);
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+axis([0 22.05e3 0 18])
+subplot(212)
+plot(w, f_dem2, 'Color', C./255);
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+axis([0 22.05e3 0 900])
 
+f3=figure(3);
+set(f3, 'Position', [X1 Y1 Leng Hei])
+subplot(211)
+plot(w, f_filt, 'Color', C./255);
+title('Filtered signal', 'Interpreter', 'latex', 'FontSize', 20, 'Color', C./255);
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+axis([0 22.05e3 0 16])
+subplot(212)
+plot(w, f_filt2, 'Color', C./255);
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+axis([0 22.05e3 0 800])
 
+f4=figure(4);
+set(f4, 'Position', [X1 Y1 Leng Hei])
+subplot(211)
+plot(w, f_down, 'Color', C./255);
+title('Downsampled signal', 'Interpreter', 'latex', 'FontSize', 20, 'Color', C./255);
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+axis([0 22.05e3 0 1.6])
+subplot(212)
+plot(w, f_down2, 'Color', C./255);
+xlabel('Frequency [Hz]', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+ylabel('Amplitude', 'Interpreter', 'latex', 'FontSize', 16, 'Color', C./255);
+axis([0 22.05e3 0 80])

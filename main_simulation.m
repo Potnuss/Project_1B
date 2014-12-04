@@ -35,7 +35,7 @@ zm = modulate(zi, fs, fc, NN);%length(zm)=length(zi)
 % Make reallength(zmr)=length(zm)
 zmr = real(zm);
 
-yrec = simulate_audio_channel(zmr, 0.8);
+yrec = simulate_audio_channel(zmr, 0.6);
 
 noiseAmp = var(yrec(23170:45850));
 sigAmp = var(yrec(63930:68120));
@@ -93,7 +93,7 @@ y = yi(1:R:end);
 % w = ((0:length(yrec)-1)')/5; % Frequency vector
 w = (0:NN-1)/NN*fs;
 
-f_yrec = abs(fft(yrec, NN));    % Recorded signal
+f_yrec = abs(fft(zmr, NN));    % Recorded signal
 f_dem = abs(fft(yib, NN));      % Demodulated signal
 f_filt = abs(fft(yi, NN));
 f_down = abs(fft(y, NN));
