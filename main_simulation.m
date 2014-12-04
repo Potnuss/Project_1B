@@ -35,7 +35,7 @@ zm = modulate(zi, fs, fc, NN);%length(zm)=length(zi)
 % Make reallength(zmr)=length(zm)
 zmr = real(zm);
 
-yrec = simulate_audio_channel(zmr, 0.8);
+yrec = simulate_audio_channel(zmr, 0.6);
 
 noiseAmp = var(yrec(23170:45850));
 sigAmp = var(yrec(63930:68120));
