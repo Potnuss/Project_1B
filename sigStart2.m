@@ -27,15 +27,17 @@ function startSample = sigStart2(rec, trueLength, cycPr ,varargin)
     if isArgPlot(varargin)
         figure 
         hold on 
-        plot(rec,'k');title('Signal Analysis of when Signal is Initiated')
+        plot(rec,'k');title('Signal Analysis of when Signal is Initiated','FontSize',14,'FontWeight','bold')
         plot([startSample*0.5 sampleStop*1.5],[cutOffAmpl*max(abs(rec)) cutOffAmpl*max(abs(rec))],'--m')
-        xlabel('samples');ylabel('Normalized Value');
-        stem([sampleStart sampleStop], [.1 .1], 'g');
-        stem(sampleMiddle, .1, 'r');
-        stem(startSample, .1, 'b');
-        legend('Signal','Real Cutoff Amplitude', 'Start & Stop Samples', 'Middle Sample', 'Estimated Start Sample');
+        plot([startSample*0.5 sampleStop*1.5],[-cutOffAmpl*max(abs(rec)) -cutOffAmpl*max(abs(rec))],'--m')
+        xlabel('Samples','FontSize',12,'FontWeight','bold');ylabel('Recorded Signal Value','FontSize',12,'FontWeight','bold');
+        plot([sampleStart sampleStart], [1 -1], '--g');
+        plot([sampleStop sampleStop],[1 -1 ],'--g');
+        plot([sampleMiddle sampleMiddle], [1 -1], '--r');
+        plot([startSample startSample], [1 -1], '--b');
+        legend('Signal','Real Upper Cutoff Amplitude','Real Lower Cutoff Amplitude', 'Start Sample','Stop Sample', 'Middle Sample', 'Estimated Start Sample');
         hold off
-        %axis([startSample*0.5 sampleStop*1.5 -1 1] )
+        axis([startSample*0.5 sampleStop*1.5 -.05 .05] )
     end
 end
 
